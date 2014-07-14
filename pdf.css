@@ -1,0 +1,138 @@
+@font-face {
+ font-family: Myriad;
+ src: url(MyriadPro-Regular.otf);
+}
+
+@font-face {
+ font-family: Myriad;
+ src: url(MyriadPro-It.otf);
+ font-style: italic;
+ font-weight: normal;
+}
+
+@font-face {
+ font-family: Myriad;
+ src: url(MyriadPro-Bold.otf);
+ font-style: normal;
+ font-weight: bold;
+}
+
+@font-face {
+ font-family: Myriad;
+ src: url(MyriadPro-BoldIt.otf);
+ font-style: italic;
+ font-weight: bold;
+}
+
+@page {
+ size: 6in 9in;
+ margin-top: 0.75in;
+ margin-bottom: 0.75in;
+ padding: 0.25in 0in 0in 0in;
+ border-top: 1pt solid black;
+}
+
+@page:left {
+ margin-left: 0.5in;
+ margin-right: 0.75in;
+ @top-left {
+  /*content: "Alice's Adventures in Wonderland";*/
+  content: counter(page) " - Alice's Adventures in Wonderland";
+  text-align: left;
+  vertical-align: bottom;
+  padding-bottom: 0.12in;
+ }
+}
+
+@page:right {
+ margin-left: 0.75in;
+ margin-right: 0.5in;
+ @top-right {
+  /*content: "Alice's Adventures in Wonderland";*/
+  content: string(chaptertitle) " - " counter(page);
+  text-align: right;
+  vertical-align: bottom;
+  padding-bottom: 0.12in;
+ }
+}
+
+@page:first {
+ @top-left {
+  content: normal;
+ }
+ @top-right {
+  content: normal;
+ }
+}
+
+@page chapter {
+ background-color: lightgray;
+}
+
+@page chapter:first {
+ @top-right {
+  content: normal;
+ }
+ @top-left {
+  content: normal;
+ }
+}
+
+@page frontmatter {
+ border-top-width: 0;
+ @top-right {
+  content: normal;
+ }
+ @top-left {
+  content: normal;
+ }
+}
+
+body {
+ font-family: "Myriad";
+ font-size: 9pt;
+ line-height: 140%;
+ counter-reset: page 1 chapternumber figurenumber;
+}
+
+p {
+ text-indent: 12pt;
+ margin-bottom: 6pt;
+ text-align: justify;
+}
+
+a {
+ font-style: italic;
+}
+
+section[data-type="titlepage"], 
+nav[data-type="toc"] {
+ text-align: center;
+ page-break-after: always;
+ page: frontmatter;
+}
+
+section[data-type="chapter"] {
+ counter-increment: chapternumber;
+ counter-reset: figurenumber;
+ page-break-before: right;
+ page: chapter;
+}
+
+nav[data-type="toc"] + section[data-type="chapter"] {
+ counter-reset: page 1 figurenumber;
+}
+
+section[data-type="chapter"] > h1 {
+ string-set: chaptertitle content(before) content();
+ margin-bottom: 1in;
+ text-align: center;
+}
+
+section[data-type="chapter"] > h1:before {
+ content: "Chapter " counter(chapternumber) ": ";
+}
+
+section[data-type="chapter"] > p:first-of-type {
+ text-indent: 0;
+}
